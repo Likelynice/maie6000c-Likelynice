@@ -11,6 +11,7 @@ from prometheus_client import (
     generate_latest,
 )
 from sqlalchemy import select, text
+from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.orm import Session
 
 from services.common.config import configure_logging
@@ -112,7 +113,11 @@ def health_live() -> HealthResponse:
 
 @app.get("/health/ready", response_model=HealthResponse)
 def health_ready(db: Session = Depends(get_db)) -> HealthResponse:
-    db.execute(text("SELECT 1"))
+    try:
+        db.execute(text("SELECT 1"))
+    except SQLAlchemyError as exc:
+        logger.warning("readiness_check_failed", extra={"db_error": str(exc)})
+        raise HTTPException(status_code=503, detail="database unavailable") from exc
     return HealthResponse(service="api", status="ok")
 
 
