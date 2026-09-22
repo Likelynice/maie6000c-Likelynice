@@ -6,7 +6,7 @@
 - Student ID:21341691
 - Repository: https://github.com/Likelynice/maie6000c-Likelynice
 - Checkpoint tag: `w03-readiness`
-- Commit SHA: [第 9 步回填]
+- Commit SHA: `709af0581506190f3fef151957d27b0eda02126c`
 
 ## 1. What I changed
 
